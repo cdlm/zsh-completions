@@ -18,7 +18,6 @@
 # vim: ft=zsh sw=2 ts=2 et
 # ------------------------------------------------------------------------------
 
-
 gem_general_flags=("(-h --help)"{-h,--help}"[Get help on this command]"
   "(-V --verbose)"{-V,--verbose}"[Set the verbose level of output]"
   "(-q --quiet)"{-q,--quiet}"[Silence commands]"
@@ -48,16 +47,22 @@ _gem() {
       "install[Install a gem into the local repository]" \
       "list[Display gems whose name starts with STRING]" \
       "lock[Generate a lockdown list of gems]" \
+      "migrate[Migrate a gem you own from Rubyforge to Gemcutter]" \
       "mirror[Mirror a gem repository]" \
+      "open[Open the gem source in your editor]" \
       "outdated[Display all gems that need updates]" \
+      "owner[Manage gem owners on Gemcutter]" \
       "pristine[Restores installed gems to pristine condition from files located in the gem cache]" \
+      "push[Push a gem up to Gemcutter]" \
       "query[Query gem information in local or remote repositories]" \
+      "read[Read the RDoc for the given gem]" \
       "rdoc[Generates RDoc for pre-installed gems]" \
       "search[Display all gems whose name contains STRING]" \
       "server[Documentation and gem repository HTTP server]" \
       "sources[Manage the sources and cache file RubyGems uses to search for gems]" \
       "specification[Display gem specification (in yaml)]" \
       "stale[List gems along with access times]" \
+      "tumble[Enable or disable Gemcutter as your primary gem source]" \
       "uninstall[Uninstall gems from the local repository]" \
       "unpack[Unpack an installed gem to the current directory]" \
       "update[Update the named gems (or all installed gems) in the local repository]" \
@@ -92,15 +97,20 @@ __gem_help_arguments() {
     "list"
     "lock"
     "mirror"
+    "open"
     "outdated"
+    "owner"
     "pristine"
+    "push"
     "query"
+    "read"
     "rdoc"
     "search"
     "server"
     "sources"
     "specification"
     "stale"
+    "tumble"
     "uninstall"
     "unpack"
     "update"
@@ -281,6 +291,12 @@ _gem_mirror() {
     $gem_general_flags && ret=0
 }
 
+_gem_open() {
+  _arguments \
+    ":gemname:__all_gems" \
+    $gem_general_flags && ret=0
+}
+
 _gem_outdated() {
   _arguments \
     "(-l --local)"{-l,--local}"[Restrict operations to the LOCAL domain]" \
@@ -294,11 +310,25 @@ _gem_outdated() {
     $gem_general_flags && ret=0
 }
 
+_gem_owner() {
+  _arguments \
+    "(-a --add)"{-a,--add}"[Add an owner]" \
+    "(-r --remove)"{-r,--remove}"[Remove an owner]" \
+    $gem_general_flags && ret=0
+}
+
 _gem_pristine() {
   _arguments \
     ":gem name:__all_gems_all" \
     "--all[Restore all installed gems to pristine condition]" \
     "(-v --version)"{-v,--version}"[Specify version of gem to restore to pristine condition]" \
+    $gem_general_flags && ret=0
+}
+
+_gem_push() {
+  _arguments \
+    *:file:_files -f \
+    "(-p --http-proxy)"{-p,--http-proxy}"[Use HTTP proxy for remote operations]" \
     $gem_general_flags && ret=0
 }
 
@@ -318,6 +348,12 @@ _gem_query() {
     "--source[Use URL as the remote source for gems]" \
     "(-p --[no-]http-proxy)"{-p,--[no-]http-proxy}"[Use HTTP proxy for remote operations]" \
     "(-u --no-update-sources)"{-u,--no-update-sources}"[Update local source cache]" \
+    $gem_general_flags && ret=0
+}
+
+_gem_read() {
+  _arguments \
+    "*:gemname:__all_gems" \
     $gem_general_flags && ret=0
 }
 
@@ -393,6 +429,11 @@ _gem_stale() {
     $gem_general_flags && ret=0
 }
 
+_gem_tumble() {
+  _arguments \
+    $gem_general_flags && ret=0
+}
+
 _gem_uninstall() {
   _arguments \
     "*:gemname:__all_gems" \
@@ -452,3 +493,11 @@ _gem_which() {
     "(-g --no-gems-first)"{-g,--no-gems-first}"[search gems before non-gems]" \
     $gem_general_flags && ret=0
 }
+
+_gem_migrate() {
+  _arguments \
+    "*:gemname:__all_gems" \
+    $gem_general_flags && ret=0
+}
+
+_gem
