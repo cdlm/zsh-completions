@@ -128,7 +128,7 @@ __gem_trust_policies() {
 
 _gem_build() {
   _arguments \
-    *:file:_files -f \
+    '*:file:_files -g \*.gemspec' \
     $gem_general_flags && ret=0
 }
 
